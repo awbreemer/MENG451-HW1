@@ -1,0 +1,27 @@
+Fixed Point Iteration
+
+	
+f(x,y) = 0 : implicit (function more work)   x^2+y^2 = r^2
+y = f(x) : explicit   y = mx+b
+
+semi-explicit
+	functions that we can make look like x = f(x)  =>  x - f(x) = 0 : implicit form of semi-explicit equation
+
+
+fixed point iteration uses semi-explicit form only
+
+for the moody diagram
+
+x = 1/sqrt(f)
+
+x = -2log[(E/D)/3.7+2.51/Re*x] = g(x)
+
+Step 1: guess x0
+	eval: x1 = g(x0)
+	check:
+		the realative change:   x1-x0 < tolerance  (cheap and easy way to check) realative step error/change
+		rearrange into implicit form:   |x1-g(x1)| < tolerance :  (computationally heavy) abs. residual error : with carefull staggering of steps you can compute this every time without additional work
+Step 2: x2 = g(x1)
+	eval
+	check again
+Repeat untill convergance
