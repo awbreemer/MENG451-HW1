@@ -1,5 +1,20 @@
 using Plots
 
+ReVals = 10 .^range(3.4,8,400)
+realativeRoughnessVals = 10 .^range(-6,.5,15)
+
+
+
+for i in range(1,length(realativeRoughnessVals))
+    frictionFactorVals = zeros(Float16, length(ReVals))
+    for j in range(1,length(ReVals))
+        frictionFactorVals[j] = FixedPointIteration(ReVals[j], realativeRoughnessVals[i], .01)
+
+    end
+    plt = plot(ReVals, frictionFactorVals, xaxis =:log10)
+end
+
+
 function FixedPointIteration(Re, RealativeRoughness, firstGuess)
     
     tolerance = 0.0001
@@ -16,7 +31,7 @@ function FixedPointIteration(Re, RealativeRoughness, firstGuess)
         previous = x
         x = previous + GofX(previous, Re, RealativeRoughness) 
 
-        println("x is ", x, "  and the ff is ", 1 / sqrt(x))
+        #println("x is ", x, "  and the ff is ", 1 / sqrt(x))
     end
 
     return(1/sqrt(x))
