@@ -1,17 +1,25 @@
 using Plots
 
 ReVals = 10 .^range(3.4,8,400)
-realativeRoughnessVals = 10 .^range(-6,.5,15)
+realativeRoughnessVals = 10 .^range(-6,-1.3,15)
 
+#=
+fric_Factor = [FixedPointIteration(Re, realativeRoughness, .05) for realativeRoughness in realativeRoughnessVals, Re in ReVals]
 
+pltMoody = plot(ReVals, fric_Factor', xaxis = :log10, yaxis = :log10)
+=#
 
 for i in range(1,length(realativeRoughnessVals))
-    frictionFactorVals = zeros(Float16, length(ReVals))
+    global frictionFactorVals = Array{Float64}(undef, length(ReVals))
     for j in range(1,length(ReVals))
-        frictionFactorVals[j] = FixedPointIteration(ReVals[j], realativeRoughnessVals[i], .01)
+        frictionFactorVals[j] = FixedPointIteration(ReVals[j], realativeRoughnessVals[i], .1)
 
     end
-    plt = plot(ReVals, frictionFactorVals, xaxis =:log10)
+    if i == 1
+        global plt = plot(ReVals, frictionFactorVals, xaxis =:log10, yaxis = :log10, ylims = [0,.1])
+    else
+        plot!(ReVals,frictionFactorVals)
+    end
 end
 
 
