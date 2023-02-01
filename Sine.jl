@@ -1,10 +1,11 @@
 using Pkg
+using BenchmarkTools
 
 
 
 function SineTest(x, realativeChange)
-    @time Sine(x, realativeChange)
-    @time sin(x)
+    @benchmark Sine(x, realativeChange)
+    @benchmark sin(x)
 
 end
 

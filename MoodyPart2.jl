@@ -1,4 +1,5 @@
 using Plots
+using Printf
 
 ReVals = 10 .^range(3.4,8,400)
 realativeRoughnessVals = 10 .^range(-6,-1.3,15)
@@ -16,9 +17,9 @@ for i in range(1,length(realativeRoughnessVals))
 
     end
     if i == 1
-        global plt = plot(ReVals, frictionFactorVals, xaxis =:log10, yaxis = :log10, ylims = [0,.1])
+        global plt = plot(ReVals, frictionFactorVals, xaxis =:log10, yaxis = :log10,legendfont = 6, grid = true, xlabel = "Reynolds Number", ylabel = "Friction Factor", legend = :bottomleft, label = @sprintf("Real. Rough. = %e", realativeRoughnessVals[i]))
     else
-        plot!(ReVals,frictionFactorVals)
+        plot!(ReVals,frictionFactorVals, label = @sprintf("Real. Rough. = %e", realativeRoughnessVals[i]))
     end
 end
 
@@ -27,10 +28,10 @@ function FixedPointIteration(Re, RealativeRoughness, firstGuess)
     
     tolerance = 0.0001
     stopFlag = false
-    x = GofX(1 / (firstGuess^2), Re, RealativeRoughness)
+    x = GofX(1 / sqrt(firstGuess), Re, RealativeRoughness)
     previous = 0.0
     while !stopFlag
-        realativeChange = abs(1 / sqrt(x) - 1 / sqrt(previous))
+        realativeChange = abs(1 / x^2 - 1 / x^2)
 
         if realativeChange < tolerance
             stopFlag = true
@@ -42,7 +43,7 @@ function FixedPointIteration(Re, RealativeRoughness, firstGuess)
         #println("x is ", x, "  and the ff is ", 1 / sqrt(x))
     end
 
-    return(1/sqrt(x))
+    return(1/x^2)
 
 end
 
